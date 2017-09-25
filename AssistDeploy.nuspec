@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<metadata>
+<id>AssistDeploy</id>
+<version>1.0.0.0</version>
+<authors>SabinIO</authors>
+<description>SSIS Deploy PowerShell Module</description>
+</metadata>
+<files>
+<file src="AssistDeploy.psd1"/>
+<file src="AssistDeploy.psm1"/>
+<file src="..\readme.md"/>
+<file src="Functions\AddIscProperty.ps1" target="Functions"/>
+<file src="Functions\ConnectSsisdbSql.ps1" target="Functions"/>
+<file src="Functions\DisconnectSsisdbSql.ps1" target="Functions"/>
+<file src="Functions\EditSsisEnvironmentName.ps1" target="Functions"/>
+<file src="Functions\GetSsisAsJson.ps1" target="Functions"/>
+<file src="Functions\GetSsisProjectLsn.ps1" target="Functions"/>
+<file src="Functions\ImportJson.ps1" target="Functions"/>
+<file src="Functions\InvokeValidateSsisProject.ps1" target="Functions"/>
+<file src="Functions\NewIscProperties.ps1" target="Functions"/>
+<file src="Functions\NewSsisVariable.ps1" target="Functions"/>
+<file src="Functions\PublishSsisEnvironment.ps1" target="Functions"/>
+<file src="Functions\PublishSsisEnvironmentReference.ps1" target="Functions"/>
+<file src="Functions\PublishSsisFolder.ps1" target="Functions"/>
+<file src="Functions\PublishSsisIspac.ps1" target="Functions"/>
+<file src="Functions\PublishSsisVariables.ps1" target="Functions"/>
+<file src="Functions\SetEnvironmentVariableProperty.ps1" target="Functions"/>
+<file src="Functions\SetEnvironmentVariableProtection.ps1" target="Functions"/>
+<file src="Functions\SetEnvironmentVariableValue.ps1" target="Functions"/>
+<file src="Functions\SetIscProperty.ps1" target="Functions"/>
+<file src="Functions\SetObjectParameterValue.ps1" target="Functions"/>
+<file src="Functions\TestVariablesForPublishProfile.ps1" target="Functions"/>
+<file src="Functions\UnpublishSsisDeployment.ps1" target="Functions"/>
+<file src="Functions\UnpublishSsisEnvironment.ps1" target="Functions"/>
+<file src="Functions\UnpublishSsisEnvironmentReference.ps1" target="Functions"/>
+</files>
+</package>
