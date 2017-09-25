@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 <metadata>
 <id>AssistDeploy</id>
-<version>1.0.0.0</version>
+<version>1.0.0.1</version>
 <authors>SabinIO</authors>
 <description>SSIS Deploy PowerShell Module</description>
 </metadata>
 <files>
 <file src="AssistDeploy.psd1"/>
 <file src="AssistDeploy.psm1"/>
-<file src="..\readme.md"/>
+<file src="readme.md"/>
 <file src="Functions\AddIscProperty.ps1" target="Functions"/>
 <file src="Functions\ConnectSsisdbSql.ps1" target="Functions"/>
 <file src="Functions\DisconnectSsisdbSql.ps1" target="Functions"/>
