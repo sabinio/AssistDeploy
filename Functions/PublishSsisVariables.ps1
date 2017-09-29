@@ -167,7 +167,7 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
                 if (!$whatIf) {
                     Set-EnvironmentVariableProtection -sqlConn $sqlConnection -ssisVar $ssisVariable -ssisProp $ssisProperties
                 }
-                Write-Verbose "As protection level ahs altered, value of $($ssisVariable.Variablename) needs to be updated." -Verbose
+                Write-Verbose "As protection level has altered, value of $($ssisVariable.Variablename) needs to be updated." -Verbose
                 if (!$whatIf) {
                     Set-EnvironmentVariableValue -sqlConn $sqlConnection -ssisVar $ssisVariable -ssisProp $ssisProperties 
                 }

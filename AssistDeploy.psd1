@@ -80,6 +80,7 @@
         ,'Set-EnvironmentVariableProtection'
         ,'Set-EnvironmentVariableValue'
         ,'Set-ObjectParameterValue'
+        ,'Test-Json'
     )
     # Cmdlets to export from this module
     CmdletsToExport = '*'

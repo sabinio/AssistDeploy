@@ -26,7 +26,7 @@ The template of the json is below:
         {
             "variableName": "",
             "dataType": "",
-            "isSensitive": 0,
+            "isSensitive": ,
             "value": "",
             "description": "",
             "parameter": [
@@ -97,7 +97,7 @@ Here is another example that has one project parameter, and one package paramete
         {
             "variableName": "my_varFolderName2",
             "dataType": "String",
-            "isSensitive": 0,
+            "isSensitive": false,
             "value": "C:\\New_New_New_Sample_Data",
             "description": "I have updated the description, should be same difference.",
             "parameter": [
@@ -116,7 +116,7 @@ Here is another example that has one project parameter, and one package paramete
         {
             "variableName": "var_LocalHostAdventureWorksDW2012_ConnectionString",
             "dataType": "String",
-            "isSensitive": 0,
+            "isSensitive": false,
             "value": "Data Source=.\\sixteen;Initial Catalog=AdventureWorksDW2012;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;",
             "description": "my connection string",
             "parameter": [
@@ -177,6 +177,7 @@ $myJsonObject | out-file ".\Daily_ETL.json"
 ## How To Deploy SSIS Project 
 Below is a simple deployment process. It makes use of all values stored in the project itself.
 ```powershell
+Import-Module ..\ps_module\SsisDeploy -Force
 #the name of the json file that has all of the environment references/variables used by the ssis packages.
 $thisSsisPublishFilePath = ".\Daily_ETL.json"
 #test ispac.

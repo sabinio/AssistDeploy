@@ -25,7 +25,7 @@ Publish-SsisFolder -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection 
         [Parameter(Position = 2, mandatory = $false)]
         [String] $ssisFolderName)
 
-    $ssisJson = Import-Json -path $ssisPublishFilePath
+    Measure-Command {$ssisJson = Import-Json -path $ssisPublishFilePath}
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName
