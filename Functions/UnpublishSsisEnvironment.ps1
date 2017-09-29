@@ -8,8 +8,8 @@ We may wish to remove an environment, especially if an environment is part of a 
 This function will check if an environment exists, and if it does, it will delete it.
 Non-mandatory params here can be used to overwrite the values stored in the publish json file passed in
 It will verify that it is deleted.
-.Parameter ssisPublishFilePath
-Filepath of json file containing the project parameters (eg Project Folder Name, Project Environment Name)
+.Parameter jsonPsCustomObject
+Tested json object loaded from Import-Json
 .Parameter sqlConnection
 The SQL Connection to SSISDB
 .Parameter ssisFolderName

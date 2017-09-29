@@ -185,12 +185,13 @@ $thisIspacToDeploy = ".\readme\Daily_ETL.ispac"
 #connection to instance that has integration services and ssisdb
 $svr = "Server=.;Integrated Security=True"
 #create a connection used throughout the process.
+$myJsonPublishProfile = Import-Json -path $thisSsisPublishFilePath
 $ssisdb = Connect-SsisdbSql -sqlConnectionString $svr
-Publish-SsisFolder -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb
-Publish-SsisEnvironment -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb
-Publish-SsisIspac -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb -ispacToDeploy $thisIspacToDeploy
-Publish-SsisVariables -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb -localVariables
-Publish-SsisEnvironmentReference -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb
+Publish-SsisFolder -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
+Publish-SsisEnvironment -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
+Publish-SsisIspac -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb -ispacToDeploy $thisIspacToDeploy
+Publish-SsisVariables -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb -localVariables
+Publish-SsisEnvironmentReference -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
 Disconnect-SsisdbSql -sqlConnection $ssisdb
 ```
 
@@ -203,13 +204,14 @@ $thisIspacToDeploy = ".\readme\Daily_ETL.ispac"
 #connection to instance that has integration services and ssisdb
 $svr = "Server=.;Integrated Security=True"
 #create a connection used throughout the process.
-$ssisdb = Connect-SsisdbSql -sqlConnectionString $svr
+$myJsonPublishProfile = Import-Json -path $thisSsisPublishFilePath
 [string]$my_varFolderName2 = "bob"
 [string]$var_LocalHostAdventureWorksDW2012_ConnectionString = "something else"
-Publish-SsisFolder -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb
-Publish-SsisEnvironment -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb
-Publish-SsisIspac -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb -ispacToDeploy $thisIspacToDeploy
-Publish-SsisVariables -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb
-Publish-SsisEnvironmentReference -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb
+$ssisdb = Connect-SsisdbSql -sqlConnectionString $svr
+Publish-SsisFolder -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
+Publish-SsisEnvironment -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
+Publish-SsisIspac -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb -ispacToDeploy $thisIspacToDeploy
+Publish-SsisVariables -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb -localVariables
+Publish-SsisEnvironmentReference -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
 Disconnect-SsisdbSql -sqlConnection $ssisdb
 ```

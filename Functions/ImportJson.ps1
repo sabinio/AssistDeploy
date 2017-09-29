@@ -12,11 +12,17 @@ $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
     param
     (
         [Parameter(Position = 0, mandatory = $true)]
-        [String] $path
+        [String] $path,
+        [Parameter(Position = 1, mandatory = $false)]
+        [Switch] $localVariables
     )
     try {
         $json = Get-Content -Raw -Path $path -Encoding UTF8 | ConvertFrom-Json
         $jsonTested = Test-Json -jsonToTest $json
+        if (!$localVariables)
+        {
+            Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested
+        }
         return $jsonTested
     }
     catch {

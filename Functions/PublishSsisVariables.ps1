@@ -76,7 +76,7 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
             }
         }
         if ($missingVariables.Count -gt 0) {
-            throw ('The following ssisEnvironmentVariable variables are not defined in the session (but are defined in the isc_publish profile): {0}' -f ($missingVariables -join " `n"))
+            throw ('The following ssisEnvironmentVariable variables are not defined in the session (but are defined in the json file): {0}' -f ($missingVariables -join " `n"))
         }
     }
     $sqlDropVars = "
