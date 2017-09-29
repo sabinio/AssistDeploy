@@ -64,7 +64,7 @@
     FunctionsToExport = @(
         ,'Connect-SsisdbSql'
         ,'Disconnect-SsisdbSql'
-	,'Get-SsisAsJson'
+	    ,'Get-SsisAsJson'
         ,'Get-SsisProjectLsn'
         ,'Import-Json'
         ,'Invoke-ValidateSsisProject'
