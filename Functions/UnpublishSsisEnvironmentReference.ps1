@@ -7,8 +7,8 @@ We may wish to remove a reference between an environment and a project.
 This function will check if an environment reference exists, and if it does, it will delete it.
 Non-mandatory params here can be used to overwrite the values stored in the publish json file passed in
 It will verify that it is deleted.
-.Parameter ssisPublishFilePath
-Filepath of json file containing the project parameters (eg Project Folder Name, Project Environment Name)
+.Parameter jsonPsCustomObject
+Tested json object loaded from Import-Json
 .Parameter sqlConnection
 The SQL Connection to SSISDB
 .Parameter ssisFolderName
@@ -23,7 +23,7 @@ Unpublish-SsisEnvironmentReference -ssisPublishFilePath $thisSsisPublishFilePath
     [CmdletBinding()]
     param(
         [Parameter(Position = 0, mandatory = $true)]
-        [string] $ssisPublishFilePath,
+        [PSCustomObject] $jsonPsCustomObject,
         [Parameter(Position = 1, mandatory = $true)]
         [System.Data.SqlClient.SqlConnection] $sqlConnection,
         [Parameter(Position = 2, mandatory = $false)]
@@ -33,7 +33,7 @@ Unpublish-SsisEnvironmentReference -ssisPublishFilePath $thisSsisPublishFilePath
         [Parameter(Position = 4, mandatory = $false)]
         [String] $ssisProjectName)
 
-    $ssisJson = Import-Json -path $ssisPublishFilePath
+    $ssisJson = $jsonPsCustomObject
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName

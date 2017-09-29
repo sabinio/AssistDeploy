@@ -5,8 +5,8 @@ Function Get-SsisProjectLsn {
 Get latest project lsn. This is effectively the version number of the project.
 .Description
 useful for when we may need to rollback, this is the latest lsn for a given project.
-.Parameter ssisPublishFilePath 
-Filepath of json file containing the project parameters (eg Project Folder Name, Project Environment Name)
+.Parameter jsonPsCustomObject
+Tested json object loaded from Import-Json
 .Parameter sqlConnection 
 The SQL Connection to SSISDB
 .Parameter ssisFolderName
@@ -19,14 +19,14 @@ Used in rollback process, but seeing as we're not currently using that process t
 
     [CmdletBinding()]
     param(
-        [Parameter(Position = 0, mandatory = $false)]
-        [string] $ssisPublishFilePath,
+        [Parameter(Position = 0, mandatory = $true)]
+        [PSCustomObject] $jsonPsCustomObject,
         [Parameter(Position = 1, mandatory = $true)]
         [System.Data.SqlClient.SqlConnection] $sqlConnection,
         [Parameter(Position = 2, mandatory = $false)]
         [String] $ssisFolderName)
 
-    $ssisJson = Import-Json -path $ssisPublishFilePath
+    $ssisJson = $jsonPsCustomObject
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName

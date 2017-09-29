@@ -6,11 +6,11 @@ function Test-VariablesForPublishProfile {
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory = $true)]
-        $ssisPublishFilePath
+        [Parameter(Position = 0, mandatory = $true)]
+        [PSCustomObject] $jsonPsCustomObject
     )
     $missingVariables = @()
-    $ssisJson = Import-Json -path $ssisPublishFilePath
+    $ssisJson = $jsonPsCustomObject
     $keys = $($ssisJson.ssisEnvironmentVariable)
     foreach ($var in $keys) {
         $varName = $var.VariableName

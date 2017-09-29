@@ -1,6 +1,6 @@
 
 Function Unpublish-SsisEnvironment {
-<#
+    <#
 .Synopsis
 If exists, delete an environment that has been published
 .Description
@@ -19,27 +19,27 @@ Optional parameter. We may wish to override the value of what is in the json fil
 .Example
 Unpublish-SsisEnvironment -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb
 #>
-[CmdletBinding()]
-param(
-[Parameter(Position = 0, mandatory = $false)]
-[string] $ssisPublishFilePath,
-[Parameter(Position = 1, mandatory = $true)]
-[System.Data.SqlClient.SqlConnection] $sqlConnection,
-[Parameter(Position = 2, mandatory = $false)]
-[String] $ssisFolderName,
-[Parameter(Position = 3, mandatory = $false)]
-[String] $ssisEnvironmentName)
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0, mandatory = $true)]
+        [PSCustomObject] $jsonPsCustomObject,
+        [Parameter(Position = 1, mandatory = $true)]
+        [System.Data.SqlClient.SqlConnection] $sqlConnection,
+        [Parameter(Position = 2, mandatory = $false)]
+        [String] $ssisFolderName,
+        [Parameter(Position = 3, mandatory = $false)]
+        [String] $ssisEnvironmentName)
 
-$ssisJson = Import-Json -path $ssisPublishFilePath
-$ssisProperties = New-IscProperties -jsonObject $ssisJson
-if ($ssisFolderName) {
-$ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName
-}
-if ($ssisEnvironmentName) {
-$ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisEnvironmentName $ssisEnvironmentName
-}
+    $ssisJson = $jsonPsCustomObject
+    $ssisProperties = New-IscProperties -jsonObject $ssisJson
+    if ($ssisFolderName) {
+        $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName
+    }
+    if ($ssisEnvironmentName) {
+        $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisEnvironmentName $ssisEnvironmentName
+    }
 
-$sqlUnpublishSsisEnvironment = "
+    $sqlUnpublishSsisEnvironment = "
 IF EXISTS (
 SELECT 1
 FROM CATALOG.environments environment
@@ -54,23 +54,23 @@ BEGIN
 EXEC CATALOG.delete_environment @1
 ,@0
 END"
-try {
-    $msg = "Checking if environment "+$ssisProperties.ssisEnvironmentName+" exists and if so will delete..."
-Write-Verbose $msg -Verbose
-$sqlCommandUnpublishEnvironment = New-Object System.Data.SqlClient.SqlCommand($sqlUnpublishSsisEnvironment, $sqlConnection)
-$sqlCommandUnpublishEnvironment.Parameters.AddWithValue("@0", $ssisProperties.ssisEnvironmentName) | Out-Null
-$sqlCommandUnpublishEnvironment.Parameters.AddWithValue("@1", $ssisProperties.ssisFolderName) | Out-Null
-$sqlCommandUnpublishEnvironment.ExecuteNonQuery() | Out-Null
-Write-Verbose "SQL Script Succeeded. Checking environment deleted..." -Verbose
-}
-catch {
-    $msg = "Deleting environment "+$ssisProperties.ssisEnvironmentName+" failed. This is the SQL Statement that failed:"
-Write-Verbose $msg -Verbose
-Write-Verbose $sqlCommandUnpublishEnvironment.CommandText -Verbose
-Write-Error $_.Exception
-}
-try {
-$sqlCheckSsisEnvironmentDeleted = "
+    try {
+        $msg = "Checking if environment " + $ssisProperties.ssisEnvironmentName + " exists and if so will delete..."
+        Write-Verbose $msg -Verbose
+        $sqlCommandUnpublishEnvironment = New-Object System.Data.SqlClient.SqlCommand($sqlUnpublishSsisEnvironment, $sqlConnection)
+        $sqlCommandUnpublishEnvironment.Parameters.AddWithValue("@0", $ssisProperties.ssisEnvironmentName) | Out-Null
+        $sqlCommandUnpublishEnvironment.Parameters.AddWithValue("@1", $ssisProperties.ssisFolderName) | Out-Null
+        $sqlCommandUnpublishEnvironment.ExecuteNonQuery() | Out-Null
+        Write-Verbose "SQL Script Succeeded. Checking environment deleted..." -Verbose
+    }
+    catch {
+        $msg = "Deleting environment " + $ssisProperties.ssisEnvironmentName + " failed. This is the SQL Statement that failed:"
+        Write-Verbose $msg -Verbose
+        Write-Verbose $sqlCommandUnpublishEnvironment.CommandText -Verbose
+        Write-Error $_.Exception
+    }
+    try {
+        $sqlCheckSsisEnvironmentDeleted = "
 IF NOT EXISTS
 (   SELECT 'exists'
 FROM CATALOG.environments environment
@@ -82,21 +82,21 @@ WHERE folder.NAME = @1
 )
 )
 SELECT 'deleted'"
-$sqlCommandVerifyEnvironment = New-Object System.Data.SqlClient.SqlCommand($sqlCheckSsisEnvironmentDeleted, $sqlConnection)
-$sqlCommandVerifyEnvironment.Parameters.AddWithValue("@0", $ssisProperties.ssisEnvironmentName) | Out-Null
-$sqlCommandVerifyEnvironment.Parameters.AddWithValue("@1", $ssisProperties.ssisFolderName) | Out-Null
-$checkSsisEnvironmentDeleted = [String]$sqlCommandVerifyEnvironment.ExecuteScalar()
-if ($checkSsisEnvironmentDeleted -eq "deleted") {
-    $msg = "Environment "+$ssisProperties.ssisEnvironmentName+" deleted."
-Write-Verbose $msg -Verbose
-}
-else {
-    $msg = "Environment "+$ssisProperties.ssisEnvironmentName+" still exists."
-Write-Verbose $msg -Verbose
-Throw;
-}
-}
-catch {
-Write-Error $_.Exception
-}
+        $sqlCommandVerifyEnvironment = New-Object System.Data.SqlClient.SqlCommand($sqlCheckSsisEnvironmentDeleted, $sqlConnection)
+        $sqlCommandVerifyEnvironment.Parameters.AddWithValue("@0", $ssisProperties.ssisEnvironmentName) | Out-Null
+        $sqlCommandVerifyEnvironment.Parameters.AddWithValue("@1", $ssisProperties.ssisFolderName) | Out-Null
+        $checkSsisEnvironmentDeleted = [String]$sqlCommandVerifyEnvironment.ExecuteScalar()
+        if ($checkSsisEnvironmentDeleted -eq "deleted") {
+            $msg = "Environment " + $ssisProperties.ssisEnvironmentName + " deleted."
+            Write-Verbose $msg -Verbose
+        }
+        else {
+            $msg = "Environment " + $ssisProperties.ssisEnvironmentName + " still exists."
+            Write-Verbose $msg -Verbose
+            Throw;
+        }
+    }
+    catch {
+        Write-Error $_.Exception
+    }
 }

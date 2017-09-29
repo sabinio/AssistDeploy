@@ -6,8 +6,8 @@ Create a catalog folder
 If not exists, create a catalog folder
 We will then be ableto deploy projects and environments
 Non-mandatory params here can be used to overwrite the values stored in the publish json file passed in
-.Parameter ssisPublishFilePath
-Filepath of json file containing the project parameters (eg Project Folder Name, Project Environment Name)
+.Parameter jsonPsCustomObject
+Tested json object loaded from Import-Json
 .Parameter sqlConnection
 The SQL Connection to SSISDB
 .Parameter ssisFolderName
@@ -19,13 +19,13 @@ Publish-SsisFolder -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection 
     [CmdletBinding()]
     param(
         [Parameter(Position = 0, mandatory = $true)]
-        [string] $ssisPublishFilePath,
+        [PSCustomObject] $jsonPsCustomObject,
         [Parameter(Position = 1, mandatory = $true)]
         [System.Data.SqlClient.SqlConnection] $sqlConnection,
         [Parameter(Position = 2, mandatory = $false)]
         [String] $ssisFolderName)
 
-    Measure-Command {$ssisJson = Import-Json -path $ssisPublishFilePath}
+    $ssisJson = $jsonPsCustomObject
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName
