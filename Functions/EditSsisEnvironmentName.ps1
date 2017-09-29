@@ -6,8 +6,8 @@ This executes the stored procedure "rename environment", effectively appending t
 .Description
 Before we re-write the values stored in an environment, we can effectively take a back up of the current environment by re-naming it.
 We can used the return name to revert this back to the original name if we need to rollback if a validation has failed
-.Parameter ssisPublishFilePath
-Filepath of json file containing the project parameters (eg Project Folder Name, Project Environment Name)
+.Parameter jsonPsCustomObject
+Tested json object loaded from Import-Json
 .Parameter sqlConnection
 The SQL Connection to SSISDB
 .Parameter ssisFolderName
@@ -21,8 +21,8 @@ $ssisEnvironmentRename = Edit-SsisEnvironmentName -ssisPublishFilePath $thisSsis
 #>
     [CmdletBinding()]
     param(
-        [Parameter(Position = 0, mandatory = $false)]
-        [string] $ssisPublishFilePath,
+        [Parameter(Position = 0, mandatory = $true)]
+        [PSCustomObject] $jsonPsCustomObject,
         [Parameter(Position = 1, mandatory = $true)]
         [System.Data.SqlClient.SqlConnection] $sqlConnection,
         [Parameter(Position = 2, mandatory = $false)]
@@ -32,7 +32,7 @@ $ssisEnvironmentRename = Edit-SsisEnvironmentName -ssisPublishFilePath $thisSsis
         [Parameter(Position = 4, mandatory = $true)]
         [String] $ssisProjectLsn)
 
-    $ssisJson = Import-Json -path $ssisPublishFilePath
+    $ssisJson = $jsonPsCustomObject
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName

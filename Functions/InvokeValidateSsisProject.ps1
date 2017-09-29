@@ -16,8 +16,8 @@ Edit-SsisEnvironmentName
 }
 This assumes you have run "unpublish-environmentReference" and "edit-ssisEnvironmentName" prior to deployment
 I am not a huge fan of roling back, but the functionality exists in this module if people want to use it.
-.Parameter ssisPublishFilePath
-Filepath of json file containing the project parameters (eg Project Folder Name, Project Environment Name)
+.Parameter jsonPsCustomObject
+Tested json object loaded from Import-Json
 .Parameter sqlConnection
 The SQL Connection to SSISDB
 .Parameter ssisFolderName
@@ -32,7 +32,7 @@ $validationStatus = Invoke-ValidateSsisProject -ssisPublishFilePath $thisSsisPub
     [CmdletBinding()]
     param(
         [Parameter(Position = 0, mandatory = $true)]
-        [string] $ssisPublishFilePath,
+        [PSCustomObject] $jsonPsCustomObject,
         [Parameter(Position = 1, mandatory = $true)]
         [System.Data.SqlClient.SqlConnection] $sqlConnection,
         [Parameter(Position = 2, mandatory = $false)]
@@ -42,7 +42,7 @@ $validationStatus = Invoke-ValidateSsisProject -ssisPublishFilePath $thisSsisPub
         [Parameter(Position = 4, mandatory = $false)]
         [string] $ssisEnvironmentName)
 
-    $ssisJson = Import-Json -path $ssisPublishFilePath
+    $ssisJson = $jsonPsCustomObject
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName

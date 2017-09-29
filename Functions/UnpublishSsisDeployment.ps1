@@ -5,8 +5,8 @@ Rollback ispac deployment: reverts to previous version of deployed project.
 .Description
 If a validate project has failed and we wish to rollback we needto revert to previous working project
 First it checks that you can rollback (ie previous versions are stored)
-.Parameter ssisPublishFilePath
-Filepath of json file containing the project parameters (eg Project Folder Name, Project Environment Name)
+.Parameter jsonPsCustomObject
+Tested json object loaded from Import-Json
 .Parameter sqlConnection
 The SQL Connection to SSISDB
 .Parameter ssisFolderName
@@ -32,7 +32,7 @@ Unpublish-SsisDeployment -ssisPublishFilePath $thisSsisPublishFilePath -sqlConne
     [CmdletBinding()]
     param(
         [Parameter(Position = 0, mandatory = $true)]
-        [string] $ssisPublishFilePath,
+        [PSCustomObject] $jsonPsCustomObject,
         [Parameter(Position = 1, mandatory = $true)]
         [System.Data.SqlClient.SqlConnection] $sqlConnection,
         [Parameter(Position = 2, mandatory = $false)]
@@ -44,7 +44,7 @@ Unpublish-SsisDeployment -ssisPublishFilePath $thisSsisPublishFilePath -sqlConne
         [Parameter(Position = 5, mandatory = $false)]
         [Switch] $delete)
 
-    $ssisJson = Import-Json -path $ssisPublishFilePath
+    $ssisJson = $jsonPsCustomObject
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName

@@ -7,8 +7,8 @@ Publish an ispac and check that it was deployed.
 $ispacToDeploy is a file path.
 We convert into bits and pass in.
 Non-mandatory params here can be used to overwrite the values stored in the publish json file passed in
-.Parameter ssisPublishFilePath
-Filepath of json file containing the project parameters (eg Project Folder Name, Project Environment Name)
+.Parameter jsonPsCustomObject
+Tested json object loaded from Import-Json
 .Parameter sqlConnection
 The SQL Connection to SSISDB
 .Parameter ispacToDeploy
@@ -26,7 +26,7 @@ Publish-SsisIspac -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $
     [CmdletBinding()]
     param(
         [Parameter(Position = 0, mandatory = $true)]
-        [string] $ssisPublishFilePath,
+        [PSCustomObject] $jsonPsCustomObject,
         [Parameter(Position = 1, mandatory = $true)]
         [System.Data.SqlClient.SqlConnection] $sqlConnection,
         [Parameter(Position = 2, mandatory = $true)]
@@ -35,7 +35,7 @@ Publish-SsisIspac -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $
         [String] $ssisFolderName,
         [Parameter(Position = 4, mandatory = $false)]
         [string] $ssisProjectName)
-    $ssisJson = Import-Json -path $ssisPublishFilePath
+    $ssisJson = $jsonPsCustomObject
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName
