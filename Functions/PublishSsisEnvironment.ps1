@@ -7,8 +7,8 @@ If it doesn't exist, publish environment
 Before we can publish variables and environment references, we will need to create an environment
 uses publish json file to get values required
 Non-mandatory params here can be used to overwrite the values stored in the publish json file passed in
-.Parameter ssisPublishFilePath
-Filepath of json file containing the project parameters (eg Project Folder Name, Project Environment Name)
+.Parameter jsonPsCustomObject
+Tested json object loaded from Import-Json
 .Parameter sqlConnection
 The SQL Connection to SSISDB
 .Parameter ssisFolderName
@@ -26,8 +26,8 @@ Publish-SsisEnvironment -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnec
 #>
     [CmdletBinding()]
     param(
-        [Parameter(Position = 0, mandatory = $false)]
-        [string] $ssisPublishFilePath,
+        [Parameter(Position = 0, mandatory = $true)]
+        [PSCustomObject] $jsonPsCustomObject,
         [Parameter(Position = 1, mandatory = $true)]
         [System.Data.SqlClient.SqlConnection] $sqlConnection,
         [Parameter(Position = 2, mandatory = $false)]
@@ -37,7 +37,7 @@ Publish-SsisEnvironment -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnec
         [Parameter(Position = 4, mandatory = $false)]
         [String] $ssisEnvironmentDescription)
 
-    $ssisJson = Import-Json -path $ssisPublishFilePath
+    $ssisJson = $jsonPsCustomObject
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName

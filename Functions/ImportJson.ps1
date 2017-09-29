@@ -16,9 +16,10 @@ $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
     )
     try {
         $json = Get-Content -Raw -Path $path -Encoding UTF8 | ConvertFrom-Json
-        return $json
+        $jsonTested = Test-Json -jsonToTest $json
+        return $jsonTested
     }
     catch {
-        throw $_.Exception.InnerException.ToString()
+        throw $_.Exception
     }
 }

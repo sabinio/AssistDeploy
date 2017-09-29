@@ -17,8 +17,8 @@ Functionality to create/alter are in separate functions:
     set-environmentvariableproperty
     set-environmentvariableprotection
     set-environmentvariablevalue
-.Parameter ssisPublishFilePath
-Filepath of json file containing the project parameters (eg Project Folder Name, Project Environment Name)
+.Parameter jsonPsCustomObject
+Tested json object loaded from Import-Json
 .Parameter sqlConnection
 The SQL Connection to SSISDB
 .Parameter ssisFolderName
@@ -38,7 +38,7 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
     [CmdletBinding()]
     param(
         [Parameter(Position = 0, mandatory = $true)]
-        [string] $ssisPublishFilePath,
+        [PSCustomObject] $jsonPsCustomObject,
         [Parameter(Position = 1, mandatory = $true)]
         [System.Data.SqlClient.SqlConnection] $sqlConnection,
         [Parameter(Position = 2, mandatory = $false)]
@@ -51,7 +51,7 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
         [Switch] $localVariables,
         [Parameter(Position = 6, mandatory = $false)]
         [Switch] $whatIf)
-    $ssisJson = Import-Json -path $ssisPublishFilePath
+    $ssisJson = $jsonPsCustomObject
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisFolderName $ssisFolderName
@@ -167,7 +167,7 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
                 if (!$whatIf) {
                     Set-EnvironmentVariableProtection -sqlConn $sqlConnection -ssisVar $ssisVariable -ssisProp $ssisProperties
                 }
-                Write-Verbose "As protection level ahs altered, value of $($ssisVariable.Variablename) needs to be updated." -Verbose
+                Write-Verbose "As protection level has altered, value of $($ssisVariable.Variablename) needs to be updated." -Verbose
                 if (!$whatIf) {
                     Set-EnvironmentVariableValue -sqlConn $sqlConnection -ssisVar $ssisVariable -ssisProp $ssisProperties 
                 }
