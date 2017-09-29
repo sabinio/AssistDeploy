@@ -6,6 +6,8 @@ Import the integration services catalog publish json file
 Internal function used to import the json file that stores the integration services catalog properties and variables.
 .Parameter path
 File path of json file.
+.Parameter localVariables
+Switch to determine whether we need to validate that variables with the name of the variableName exists or not in current session.
 .Example
 $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
 #>

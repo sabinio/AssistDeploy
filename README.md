@@ -185,7 +185,7 @@ $thisIspacToDeploy = ".\readme\Daily_ETL.ispac"
 #connection to instance that has integration services and ssisdb
 $svr = "Server=.;Integrated Security=True"
 #create a connection used throughout the process.
-$myJsonPublishProfile = Import-Json -path $thisSsisPublishFilePath
+$myJsonPublishProfile = Import-Json -path $thisSsisPublishFilePath -localVariables
 $ssisdb = Connect-SsisdbSql -sqlConnectionString $svr
 Publish-SsisFolder -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
 Publish-SsisEnvironment -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
@@ -204,9 +204,9 @@ $thisIspacToDeploy = ".\readme\Daily_ETL.ispac"
 #connection to instance that has integration services and ssisdb
 $svr = "Server=.;Integrated Security=True"
 #create a connection used throughout the process.
-$myJsonPublishProfile = Import-Json -path $thisSsisPublishFilePath
 [string]$my_varFolderName2 = "bob"
 [string]$var_LocalHostAdventureWorksDW2012_ConnectionString = "something else"
+$myJsonPublishProfile = Import-Json -path $thisSsisPublishFilePath
 $ssisdb = Connect-SsisdbSql -sqlConnectionString $svr
 Publish-SsisFolder -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
 Publish-SsisEnvironment -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
