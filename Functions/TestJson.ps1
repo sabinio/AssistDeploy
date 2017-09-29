@@ -48,17 +48,17 @@ $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
             $err += ("`n" + 'Values are not specified for the following names in a SsisEnvironmentVariable object in the json file: {0}' -f ($missingSev -join " `n"))
         }
         if (([string]$varType = $envVar.VariableName.GetType()) -ne "string") {
-            $Name = "{0}" -f $envVar.VariableName
+            $Name = "VariableName {0}" -f $envVar.VariableName
             $varType += ", should be string."
             $badType | Add-Member -MemberType NoteProperty -Name $Name -Value $varType
         }
         if (([string]$varType = $envVar.DataType.GetType()) -ne "string") {
-            $Name = "{0}_{1}" -f $envVar.VariableName, $envVar.DataType
+            $Name = "VariableName {0} DataType {1}" -f $envVar.VariableName, $envVar.DataType
             $varType += ", should be string."
             $badType | Add-Member -MemberType NoteProperty -Name $Name -Value $varType
         } 
         if (([string]$varType = $envVar.IsSensitive.GetType()) -ne "bool") {
-            $Name = "{0}_{1}" -f $envVar.VariableName, $envVar.IsSensitive
+            $Name = "VariableName {0} IsSensitive {1}" -f $envVar.VariableName, $envVar.IsSensitive
             $varType += ", should be boolean."
             $badType | Add-Member -MemberType NoteProperty -Name $Name -Value $varType
         } 
@@ -75,18 +75,18 @@ $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
                 $err += ("`n" + 'Values are not specified for the following names in a parameter object in the json file: ssisEnvironmentVariable{0}, parameter' -f ($envVar.Variablename, $missingParam -join " `n"))
             }
             if (([string]$varType = $param.ParameterName.GetType()) -ne "string") {
-                $Name = "{0}_{1}" -f $envVar.VariableName, $param.ParameterName
+                $Name = "variable {0} ParameterName {1}" -f $envVar.VariableName, $param.ParameterName
                 $varType += ", should be string."
                 $badType | Add-Member -MemberType NoteProperty -Name $Name-Value $varType
             }
             if (([string]$varType = $param.parameterType.GetType()) -ne "string") {
-                $Name = "{0}_{1}_{2}" -f $envVar.VariableName, $param.ParameterName, $param.ParameterType
+                $Name = "variable {0}, ParameterName {1} ParameterType {2}" -f $envVar.VariableName, $param.ParameterName, $param.ParameterType
                 $varType += ", should be string."
                 $badType | Add-Member -MemberType NoteProperty -Name $param.parameterType -Value $varType
             }
             if ($param.parameterType -eq "Package") {
                 if (([string]$varType = $param.ObjectName.GetType()) -ne "string") {
-                    $Name = "{0}_{1}_{2}" -f $envVar.VariableName, $param.ParameterName, $param.ParameterType
+                    $Name = "variable {0}, ParameterName {1} objectName {2}" -f $envVar.VariableName, $param.ParameterName, $param.ParameterType
                     $varType += ", should be string."
                     $badType | Add-Member -MemberType NoteProperty -Name $param.parameterType -Value $varType
                 }
@@ -94,7 +94,7 @@ $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
         }
     }
     if ($badType.PSObject.Properties.Count -gt 0) {
-        $msg = "The following values for either VariableName or DataType under SsisEnvironmentVariable are not correct type: "
+        $msg = "The following values have wrong typing: "
         $badType.PSObject.Properties | ForEach-Object {
             $msg += "`n" + $_.Name + " is type " + $_.Value 
         }
