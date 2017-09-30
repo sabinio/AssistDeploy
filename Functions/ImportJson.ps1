@@ -25,14 +25,23 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
     try {
         $json = Get-Content -Raw -Path $jsonPath -Encoding UTF8 | ConvertFrom-Json
         $jsonTested = Test-Json -jsonToTest $json
-        if (!$localVariables)
-        {
-            Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested
-        }
-        Test-ProjectParamsMatch -jsonObject $jsonTested -ispacPath $ispacPath
-        return $jsonTested
     }
     catch {
         throw $_.Exception
     }
+    if (!$localVariables) {
+        try {
+            Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested
+        }
+        catch {
+            throw $_.Exception
+        }
+    }
+    try {
+        Test-ProjectParamsMatch -jsonObject $jsonTested -ispacPath $ispacPath
+    }
+    catch {
+        throw $_.Exception
+    }
+    return $jsonTested
 }

@@ -25,7 +25,14 @@ Test-ProjectParamsMatch -jsonObject "C:\Users\SQLTraining\Documents\iscPublish.j
         Remove-Item -r $ispacFilePath
     }
     New-Item $ispacFilePath -ItemType Directory
-    $jsonParameterNameArray = $myJsonPublishProfile.SsisEnvironmentVariable.Parameter | Where-Object {$_.ParameterType -eq "project"}
+    $jsonArray = $jsonObject.SsisEnvironmentVariable.Parameter | Where-Object {$_.ParameterType -eq "project"}
+    if ($jsonArray.Count -gt 1) {
+        [System.Collections.ArrayList] $jsonArrayParameterName = $JsonArray.ParameterName
+    }
+    else {
+        $jsonArrayParameterName = $JsonArray.ParameterName
+    }
+    Remove-Variable -Name jsonArray
     Copy-Item $thisIspacToDeploy -Destination $ispacFilePath
     Rename-Item -Path (Join-Path $ispacFilePath -ChildPath $ispacFileName) -NewName "$ispacFileName.zip"
     $zipFile = Join-Path $ispacFilePath -ChildPath "$ispacFileName.zip"
@@ -37,22 +44,24 @@ Test-ProjectParamsMatch -jsonObject "C:\Users\SQLTraining\Documents\iscPublish.j
     $projectParamsFile = Join-Path $ispacFilePath -ChildPath "Project.params"
     [xml]$projectParams = Get-Content $projectParamsFile
     foreach ($projectParam in $projectParams.Parameters.Parameter) {
-        if ($jsonParameterNameArray.ParameterName -contains $projectParam.Name) {
-            Write-Verbose ("Project parameter $($projectParam.Name) in json matches project parameter $($jsonParameterNameArray.ParameterName) in ispac. " -f $varName) -Verbose
+        if ($jsonArrayParameterName -contains $projectParam.Name) {
+            Write-Verbose ("Project parameter $($projectParam.Name) in json exists in json. " -f $varName) -Verbose
+            [string]$varType = $jsonArrayParameterName.GetType() 
+            if ($varType -ne "string") {
+                $jsonArrayParameterName.Remove($projectParam.Name)
+            }
+            else {
+                Clear-Variable -Name jsonArrayParameterName
+            }
         }
         else {
             [string]$missingVariables += $projectParam.Name + ' '
         }
     }
     if ($missingVariables.Count -gt 0) {
-        throw ('The following project params are not defined in the session (but are defined in the json file): {0}' -f ($missingVariables -join " `n"))
+        throw ('The following project params are not present in the json file: {0}' -f ($missingVariables -join " `n"))
     }
-
-    if ($projectParams.Parameters.Parameter.Count -gt $jsonParameterNameArray.Count) {
-        throw ("The count between project parameters in the ispac ($($projectParams.Parameters.Parameter.Count)) are greater than what is in the json file ($($jsonParameterNameArray.Count)). `n This implies that the json file is missing a parameter. Please review.")
-    }
-
-    if ($projectParams.Parameters.Parameter.Count -lt $jsonParameterNameArray.Count) {
-        Write-warning ("The count between project parameters in the ispac ($($projectParams.Parameters.Parameter.Count)) are less than what is in the json file ($($jsonParameterNameArray.Count)). `n This implies that the json file has too many project parameters. This will not cause a faile deployment, but is not a good thing. Please review.")
+    if ($jsonArrayParameterName.Count -gt 0) {
+        Write-Warning ('The following json parameters and corresponding environment variables are no longer required to be in the json file: {0}' -f ($jsonArrayParameterName -join " `n"))
     }
 }
