@@ -31,17 +31,17 @@ Set-EnvironmentVariableValue -sqlConn $sqlConnection -ssisVar $ssisVariable -ssi
             $sqlCmdVarValue.Parameters.AddWithValue("@1", $ssisVar.variableName) | Out-Null
             $sqlCmdVarValue.Parameters.AddWithValue("@2", $ssisProp.ssisFolderName) | Out-Null
             Switch ($($ssisVar.dataType)) {
-                Boolean {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Bit).Value = [System.Convert]::ToBoolean($($ssisVar.value))| Out-Null}
-                Byte {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::TinyInt).Value = ($($ssisVar.value))| Out-Null} 
-                DateTime {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::DateTime).Value = $($ssisVar.value)| Out-Null}
-                Double {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Float).Value = $($ssisVar.value) | Out-Null} 
-                Int16 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::smallint).Value = $($ssisVar.value)| Out-Null}
-                Int32 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::int).Value = $($ssisVar.value)| Out-Null}
-                Int64 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::bigint).Value = $($ssisVar.value)| Out-Null}
-                UInt32 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Variant).Value = $($ssisVar.value)| Out-Null}
-                UInt64 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Variant).Value = $($ssisVar.value)| Out-Null}
-                Single {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Real).Value = $($ssisVar.value)| Out-Null}
-                String {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::NVarChar).Value = $($ssisVar.value)| Out-Null}
+                Boolean {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Bit).Value = [System.Convert]::ToBoolean($($ssisVar.value))}
+                Byte {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::TinyInt).Value = ($ssisVar.value)} 
+                DateTime {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::DateTime).Value = $($ssisVar.value)}
+                Double {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Float).Value = $($ssisVar.value) } 
+                Int16 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::smallint).Value = $($ssisVar.value)}
+                Int32 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::int).Value = $($ssisVar.value)}
+                Int64 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::bigint).Value = $($ssisVar.value)}
+                UInt32 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Variant).Value = $($ssisVar.value)}
+                UInt64 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Variant).Value = $($ssisVar.value)}
+                Single {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Real).Value = $($ssisVar.value)}
+                String {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::NVarChar).Value = $($ssisVar.value)}
             }
             $sqlCmdVarValue.ExecuteNonQuery() | Out-Null
             Write-Verbose "Updated value of environment variable $($ssisVar.variableName)." -Verbose
