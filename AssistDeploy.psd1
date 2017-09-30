@@ -13,7 +13,7 @@
     NestedModules = @()
  
     # Version number of this module.
-    ModuleVersion = '1.0'
+    ModuleVersion = '1.2.0.0'
  
     # ID used to uniquely identify this module
     GUID = '00049e8b-6f5f-41be-8e36-31d500ee53b9'
@@ -81,6 +81,7 @@
         ,'Set-EnvironmentVariableValue'
         ,'Set-ObjectParameterValue'
         ,'Test-Json'
+        ,'Test-ProjectParamsMatch'
     )
     # Cmdlets to export from this module
     CmdletsToExport = '*'
