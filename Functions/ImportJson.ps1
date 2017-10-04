@@ -23,6 +23,7 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
         [Switch] $localVariables
     )
     try {
+        Write-Verbose "Importing json..." -Verbose
         $json = Get-Content -Raw -Path $jsonPath -Encoding UTF8 | ConvertFrom-Json
         $jsonTested = Test-Json -jsonToTest $json
     }
@@ -31,6 +32,7 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
     }
     if (!$localVariables) {
         try {
+            Write-Verbose "Testing the PowerShell variables exist to update values in json file... " -Verbose
             Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested
         }
         catch {
@@ -38,6 +40,7 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
         }
     }
     try {
+        Write-Verbose "Testing project params in project.params match the project params in the json file..." -Verbose
         Test-ProjectParamsMatch -jsonObject $jsonTested -ispacPath $ispacPath
     }
     catch {
