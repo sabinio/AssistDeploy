@@ -9,7 +9,6 @@ json object.
 .Example
 $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
 #>
-    [CmdletBinding]
     param
     (
         [Parameter(Position = 0, mandatory = $true)]
