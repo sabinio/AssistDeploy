@@ -9,6 +9,7 @@ json object.
 .Example
 $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
 #>
+    [CmdletBinding]
     param
     (
         [Parameter(Position = 0, mandatory = $true)]
@@ -36,7 +37,7 @@ $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
     if ($missingIsc) {
         $err = ('Values are not specified for the following names in the IntegrationServicesCatalog object in the json file: {0}' -f ($missingIsc -join " `n"))
     }
-    $badType = New-Object –TypeName PSObject
+    $badType = New-Object -TypeName PSObject
     foreach ($envVar in $jsonToTest.SsisEnvironmentVariable) {
         if (!$envVar.VariableName)
         {$missingSev += "VariableName "}
