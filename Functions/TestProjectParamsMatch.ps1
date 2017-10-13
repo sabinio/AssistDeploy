@@ -33,6 +33,12 @@ Test-ProjectParamsMatch -jsonObject "C:\Users\SQLTraining\Documents\iscPublish.j
         catch {
             throw $_.Exception
         }
+        $ispacFileNameNoExtension = [System.Io.Path]::GetFileNameWithoutExtension($ispacPath)
+        if ($ispacFileNameNoExtension -ne $jsonObject.IntegrationServicesCatalog.ssisProjectname)
+        {
+            Write-Error "Ispac File and ($ispacFileNameNoExtension) and project name in json file ($($jsonObject.IntegrationServicesCatalog.ssisProjectname)) do not match. Mismatch will cause deployment to fail. Exiting..."
+            exit
+        }
         $jsonArray = $jsonObject.SsisEnvironmentVariable.Parameter | Where-Object {$_.ParameterType -eq "project"}
         if ($jsonArray.Count -gt 1) {
             [System.Collections.ArrayList] $jsonArrayParameterName = $JsonArray.ParameterName
@@ -60,7 +66,7 @@ Test-ProjectParamsMatch -jsonObject "C:\Users\SQLTraining\Documents\iscPublish.j
         $projectParamsFile = Join-Path $unpacFilepath -ChildPath "Project.params"
         if ($projectParamsFile.Length -eq 0) {
             Write-Verbose "Project params file not found" -Verbose
-            Throw
+            Throw 1
         }
         Write-Verbose "project params file found - $projectParamsFile" -Verbose
         [xml]$projectParams = Get-Content $projectParamsFile
