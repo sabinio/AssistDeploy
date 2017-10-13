@@ -6,6 +6,9 @@ AUTHOR: Richie Lee
 This module will take an ispac file and deploy the dtsx packages contained within the ispac to an Integration Services Catalog. In addtion, because a SSIS Project requires more than just the dtsx packages (more on this later), this module aims to deploy these objects stored within a json file. The module also attempts to deploy all objects in such a way that it is idempotent.
 Each one of the functions contained have their own documentation in the header of the function. This readme will attempt to expand up on that documentation, But is is strongly encouraged that you read the header documentation within each function to understand better what is going on.
 
+## Sample
+There is a sample repo [here](https://github.com/sabinio/AssistDeploy_WWI_SSIS_Samples)
+
 ## What is in the json file?
 As mentioned, there is more than just the dtsx packages that need to be deployed. Before a project can be deployed, a folder needs to be created. And if a SSIS project uses parameters, then the parameters of a project, be they at a project or package level, will need an environment variable, so that we can deploy the same ispac to different environments. And before an environment variable can be created, an environment needs to be created, with an environment reference between the environment and the project. 
 
