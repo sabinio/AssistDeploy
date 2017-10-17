@@ -13,7 +13,7 @@
     NestedModules = @()
  
     # Version number of this module.
-    ModuleVersion = '1.3.0.5'
+    ModuleVersion = '1.4.0.0'
  
     # ID used to uniquely identify this module
     GUID = '00049e8b-6f5f-41be-8e36-31d500ee53b9'
@@ -64,7 +64,8 @@
     FunctionsToExport = @(
         ,'Connect-SsisdbSql'
         ,'Disconnect-SsisdbSql'
-	    ,'Get-SsisAsJson'
+	,'Edit-SsisEnvironmentName'
+	,'Get-SsisAsJson'
         ,'Get-SsisProjectLsn'
         ,'Import-Json'
         ,'Invoke-ValidateSsisProject'
@@ -82,6 +83,10 @@
         ,'Set-ObjectParameterValue'
         ,'Test-Json'
         ,'Test-ProjectParamsMatch'
+	,'Unpublish-SsisDeployment'
+	,'Unpublish-SsisEnvironment'
+        ,'Unpublish-SsisEnvironmentReference'
+'
     )
     # Cmdlets to export from this module
     CmdletsToExport = '*'
