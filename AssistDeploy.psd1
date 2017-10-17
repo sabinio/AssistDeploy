@@ -86,7 +86,6 @@
 	,'Unpublish-SsisDeployment'
 	,'Unpublish-SsisEnvironment'
         ,'Unpublish-SsisEnvironmentReference'
-'
     )
     # Cmdlets to export from this module
     CmdletsToExport = '*'
