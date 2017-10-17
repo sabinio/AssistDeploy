@@ -64,7 +64,8 @@
     FunctionsToExport = @(
         ,'Connect-SsisdbSql'
         ,'Disconnect-SsisdbSql'
-	    ,'Get-SsisAsJson'
+	,'Edit-SsisEnvironmentName
+	,'Get-SsisAsJson'
         ,'Get-SsisProjectLsn'
         ,'Import-Json'
         ,'Invoke-ValidateSsisProject'
@@ -82,6 +83,10 @@
         ,'Set-ObjectParameterValue'
         ,'Test-Json'
         ,'Test-ProjectParamsMatch'
+	,'Unpublish-SsisDeployment'
+	,'Unpublish-SsisEnvironment'
+        ,'Unpublish-SsisEnvironmentReference'
+'
     )
     # Cmdlets to export from this module
     CmdletsToExport = '*'
