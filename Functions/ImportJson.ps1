@@ -39,6 +39,15 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
             throw $_.Exception
         }
     }
+    else{
+        try {
+            Write-Verbose "Testing the environment variables in json file have a value... " -Verbose
+            Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested -localVariables
+        }
+        catch {
+            throw $_.Exception
+        }
+    }
     try {
         Write-Verbose "Testing project params in project.params match the project params in the json file..." -Verbose
         Test-ProjectParamsMatch -jsonObject $jsonTested -ispacPath $ispacPath

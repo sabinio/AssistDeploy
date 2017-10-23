@@ -101,8 +101,15 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
                         )
                 )
                 AND p.project_id = (
-                    select er.project_id from CATALOG.environment_references er
-                    where er.environment_name = @0)
+                    SELECT er.project_id
+                    FROM CATALOG.environment_references er
+                    WHERE er.environment_name = @0
+                        AND er.project_id = (
+                            SELECT project_id
+                            FROM CATALOG.projects proj
+                            WHERE proj.NAME = @1
+                            )
+                    )
         )
         SELECT referenced_variable_name, CASE eevee.sensitive WHEN 0 THEN 'False' ELSE 'True' END as sensitive, eevee.description, eevee.type as data_type, eevee.value
         FROM cte
