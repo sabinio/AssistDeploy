@@ -219,6 +219,7 @@ $svr = "Server=.;Integrated Security=True"
 [string]$var_LocalHostAdventureWorksDW2012_ConnectionString = "something else"
 $myJsonPublishProfile = Import-Json -path $thisSsisPublishFilePath
 $ssisdb = Connect-SsisdbSql -sqlConnectionString $svr
+Test-CurrentPermissions -sqlConnection $ssisdb
 Publish-SsisFolder -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
 Publish-SsisEnvironment -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
 Publish-SsisIspac -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb -ispacToDeploy $thisIspacToDeploy
