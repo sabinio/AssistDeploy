@@ -226,3 +226,6 @@ Publish-SsisVariables -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $
 Publish-SsisEnvironmentReference -jsonPsCustomObject $myJsonPublishProfile -sqlConnection $ssisdb
 Disconnect-SsisdbSql -sqlConnection $ssisdb
 ```
+
+## What Minimal Permissions Are Required?
+The only permission required is the account running the deployment needs to be in the "ssis_admin" role in SSISDB. The Function "Test-CurrentPermissions" runs a check againsth te database to make sure it has the correct permissions.
