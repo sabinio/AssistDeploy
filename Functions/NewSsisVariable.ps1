@@ -69,6 +69,9 @@ IF EXISTS (
             UInt64 {$sqlCmdPublishVar.Parameters.Add("@5", [System.Data.SqlDbType]::Variant).Value = $($ssisVar.value)}
             Single {$sqlCmdPublishVar.Parameters.Add("@5", [System.Data.SqlDbType]::Real).Value = $($ssisVar.value)}
             String {$sqlCmdPublishVar.Parameters.Add("@5", [System.Data.SqlDbType]::NVarChar).Value = $($ssisVar.value)}
+            Decimal {$sqlCmdPublishVar.Parameters.Add("@5", [System.Data.SqlDbType]::Decimal).Value = $($ssisVar.value)}
+            Default {"Data type for $($ssisVar.variableName) is not currently supported. Either contact developer of module or alter Set-EnvironmentVariableValue Function to support data type $($ssisVar.dataType)."
+            Throw}
         }
         $sqlCmdPublishVar.Parameters.AddWithValue("@6", $($ssisVar.description)) | Out-Null
         $sqlCmdPublishVar.ExecuteNonQuery() | Out-Null
