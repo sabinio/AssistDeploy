@@ -42,6 +42,9 @@ Set-EnvironmentVariableValue -sqlConn $sqlConnection -ssisVar $ssisVariable -ssi
                 UInt64 {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Variant).Value = $($ssisVar.value)}
                 Single {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Real).Value = $($ssisVar.value)}
                 String {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::NVarChar).Value = $($ssisVar.value)}
+                Decimal {$sqlCmdVarValue.Parameters.Add("@3", [System.Data.SqlDbType]::Decimal).Value = $($ssisVar.value)}
+                Default {"Data type for $($ssisVar.variableName) is not currently supported. Either contact developer of module or alter Set-EnvironmentVariableValue Function to support data type $($ssisVar.dataType)."
+                Throw}
             }
             $sqlCmdVarValue.ExecuteNonQuery() | Out-Null
             Write-Verbose "Updated value of environment variable $($ssisVar.variableName)." -Verbose
