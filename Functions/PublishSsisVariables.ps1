@@ -80,43 +80,28 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
         }
     }
     $sqlDropVars = "
-    ;
-    WITH cte
-    AS (
-        SELECT referenced_variable_name
-        FROM CATALOG.object_parameters p
-        WHERE project_id = (
-                SELECT project_id
-                FROM CATALOG.projects proj
-                WHERE proj.NAME = @1
-                    AND proj.folder_id = (
-                        SELECT folder.folder_id
-                        FROM CATALOG.folders folder
-                        WHERE folder.NAME = @2
-                            AND folder.folder_id = (
-                                SELECT environment.folder_id
-                                FROM CATALOG.environments environment
-                                WHERE environment.NAME = @0
-                                )
-                        )
-                )
-                AND p.project_id = (
-                    SELECT er.project_id
-                    FROM CATALOG.environment_references er
-                    WHERE er.environment_name = @0
-                        AND er.project_id = (
-                            SELECT project_id
-                            FROM CATALOG.projects proj
-                            WHERE proj.NAME = @1
-                            )
+                SELECT referenced_variable_name = c.name
+                ,sensitive = CASE c.sensitive
+                    WHEN 0
+                        THEN 'False'
+                    ELSE 'True'
+                    END
+                ,c.description
+                ,data_type = c.type
+                ,c.value
+            FROM SSISDB.CATALOG.folders a
+            INNER JOIN SSISDB.CATALOG.environments b ON a.folder_id = b.folder_id
+            INNER JOIN SSISDB.CATALOG.environment_variables c ON b.environment_id = c.environment_id
+            INNER JOIN internal.projects p ON a.folder_id = p.folder_id
+            LEFT JOIN CATALOG.environment_references er ON er.environment_name = b.name
+                AND er.environment_folder_name = a.name
+            WHERE p.name = @1
+                AND a.name = @2
+                AND (
+                    b.name = @0
+                    OR b.name IS NULL
                     )
-        )
-        SELECT referenced_variable_name, CASE eevee.sensitive WHEN 0 THEN 'False' ELSE 'True' END as sensitive, eevee.description, eevee.type as data_type, eevee.value
-        FROM cte
-        INNER JOIN CATALOG.environment_variables eevee on eevee.NAME = cte.referenced_variable_name
-        WHERE eevee.environment_id = (SELECT environment_id FROM CATALOG.environments environment
-        WHERE environment.NAME = @0)
-        "
+            "
     $sqlCmdDropVars = New-Object System.Data.SqlClient.SqlCommand($sqlDropVars, $sqlConnection)
     $sqlCmdDropVars.Parameters.AddWithValue("@0", $ssisProperties.ssisEnvironmentName) | Out-Null
     $sqlCmdDropVars.Parameters.AddWithValue("@1", $ssisProperties.ssisProjectName) | Out-Null
