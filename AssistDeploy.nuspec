@@ -5,7 +5,7 @@
 <version>1.4.0.1</version>
 <authors>SabinIO</authors>
 <description>SSIS Deploy PowerShell Module</description>
-<licenseUrl>https://github.com/sabinio/AssistDeploy/blob/master/LICENSE</licenseUrl>
+<licenseUrl>https://raw.githubusercontent.com/sabinio/AssistDeploy/master/LICENSE</licenseUrl>
 </metadata>
 <files>
 <file src="AssistDeploy.psd1"/>
