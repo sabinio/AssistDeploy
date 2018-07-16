@@ -10,6 +10,7 @@
 <file src="AssistDeploy.psd1"/>
 <file src="AssistDeploy.psm1"/>
 <file src="readme.md"/>
+<file src="LICENSE"/>
 <file src="Functions\AddIscProperty.ps1" target="Functions"/>
 <file src="Functions\ConnectSsisdbSql.ps1" target="Functions"/>
 <file src="Functions\DisconnectSsisdbSql.ps1" target="Functions"/>

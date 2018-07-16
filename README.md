@@ -233,4 +233,3 @@ The only permission required is the account running the deployment needs to be i
 
 ## What Variable Data Types Are Supported? 
 The most popular variable data types are supported, but more can be added. A default message will spit out to get in touch with developers of project to add more, or you can add more yourself and create a pull request!
-
