@@ -12,7 +12,7 @@ AUTHOR: Richie Lee
 
 ## Introduction
 This module will take an ispac file and deploy the dtsx packages contained within the ispac to an Integration Services Catalog. In addtion, because a SSIS Project requires more than just the dtsx packages (more on this later), this module aims to deploy these objects stored within a json file. The module also attempts to deploy all objects in such a way that it is idempotent.
-Each one of the functions contained have their own documentation in the header of the function. This readme will attempt to expand up on that documentation, But is is strongly encouraged that you read the header documentation within each function to understand better what is going on.
+Each one of the functions contained have their own documentation in the header of the function. This readme will attempt to expand up on that documentation, But it is strongly encouraged that you read the header documentation within each function to understand better what is going on.
 
 ## Sample
 There is a sample repo [here](https://github.com/sabinio/AssistDeploy_WWI_SSIS_Samples)
@@ -20,7 +20,7 @@ There is a sample repo [here](https://github.com/sabinio/AssistDeploy_WWI_SSIS_S
 ## What is in the json file?
 As mentioned, there is more than just the dtsx packages that need to be deployed. Before a project can be deployed, a folder needs to be created. And if a SSIS project uses parameters, then the parameters of a project, be they at a project or package level, will need an environment variable, so that we can deploy the same ispac to different environments. And before an environment variable can be created, an environment needs to be created, with an environment reference between the environment and the project. 
 
-Because there is no way provided by Microsoft to include this information with a SSIS Project, it is necessary to provide this information someway along with the ispac, using the publish.xml file used by SSDT as inspiration, the publish.json file will store this information that will then be used by the ssisDeploy module to deploy these objects to an Integration Services Catalog.
+Since there is no way provided by Microsoft to include this information with a SSIS Project, it is necessary to provide this information in some way along with the ispac. Using the publish.xml file used by SSDT as inspiration, the publish.json file will store this information that will then be used by the ssisDeploy module to deploy these objects to an Integration Services Catalog.
 
 ## What is the structure for the publish.json file?
 The template of the json is below:
@@ -51,7 +51,7 @@ The template of the json is below:
     ]
 }
 ```
-The json has a section that declares the folder/project/environment/environment description which is used throuhgout the deployment process. These can be overwritten by the functions if necessary. Any parameter, either package or project, will reference an environment variable. So all parameters have parents that are an environment variable. Whether a parameter is a package or project only matters in one sense: a package parameter will have to include a "objectName" string with the value set to the package it exists in. The "value" of each parameter will be the "variableName".
+The json has a section that declares the folder/project/environment/environment description which is used throuhgout the deployment process. These can be overwritten by the functions if necessary. Any parameter, either package or project, will reference an environment variable. So all parameters have parents that are an environment variable. Whether a parameter is a package or project only matters in one sense: a package parameter will have to include an "objectName" string with the value set to the package it exists in. The "value" of each parameter will be the "variableName".
 
 Below is an example of just two project parameters with two environment variables. 
 ```json
@@ -145,26 +145,29 @@ Here is another example that has one project parameter, and one package paramete
 All the functions marked "Publish" require that the json file is passed in. This is then loaded as a json object in the function. For json objects under "Integration Services Catalog", the overwrite of the values is quite simple. So if we wish to alter the folder/environment/environment description, there are optional parameters that override what is in the json file. Consult the documentation headers in the functions for more info/working examples
 
 For the values of variables under ssisEnvironmentVariables, the process is only slightly more complex. It is only the value of "value"  that will change; this is where the actual value of both environment and parameters is stored. All other values should remain constant.
-In "Publish-SsisVariables" there is a switch called -localVariables. If this is included when calling the function then the values within the json file will be used when publishing variables to the Integration Services Catalog. However if this switch is not included then a PowerShell variable with the exact same name as the varaibleName must exist in the same session, and the value of this Powershell parameter overwrites the value in the json file in memory. 
+In "Publish-SsisVariables" there is a switch called -localVariables. If this is included when calling the function then the values within the json file will be used when publishing variables to the Integration Services Catalog. However if this switch is not included then a PowerShell variable with the exact same name as the varaibleName must exist in the same session either as a full Powershell variable (e.g. $Foo) or an Environment variable (e.g. $Env:Foo) (settable using the -variableType parameter), and the value of this Powershell parameter overwrites the value in the json file in memory. 
 
 To see this in action, refer to PublishSsisVariables.ps1. An example of how this works is provided below:
 ```powershell
 $my_variable = "this is the value of my_variable"
+$variableType = 'PS' # or 'Env'
 
-if (Test-Path variable:my_variable) {
-    Write-Host $my_variable -ForegroundColor Magenta -BackgroundColor Yellow
+if (Test-Variable -variableName 'my_variable' -variableType $variableType) {
+    Write-Host $(Get-VariableByType) -ForegroundColor Magenta -BackgroundColor Yellow
 }
 else {
-    Write-Host 'Variable $my_variable does not exist.' -ForegroundColor Yellow -BackgroundColor Magenta
+    Write-Host "Variable `$my_variable of type '$variableType' does not exist." -ForegroundColor Yellow -BackgroundColor Magenta
 }
 #note: my_non_existent_variable doesn't exist, so will go to else statement
-if (Test-Path variable:my_non_existent_variable) {
+if (Test-Variable -variableName 'my_non_existent_variable' -variableType $variableType) {
     Write-Host $my_non_existent_variable -ForegroundColor Magenta -BackgroundColor Yellow
 }
 else {
-    Write-Host 'Variable $my_non_existent_variable does not exist.' -ForegroundColor Yellow -BackgroundColor Magenta
+    Write-Host "Variable `$my_non_existent_variable of type '$variableType' does not exist." -ForegroundColor Yellow -BackgroundColor Magenta
 }
 ```
+N.B. If the -variableType parameter is not supplied, it defaults to 'PS'.
+
 The idea of localvariables was so that this module could be used both on a developers box and as part of a deploy pipeline run by TeamCity/Octpus/Jenkins etc.
 
 ## This json File Seems Like A Lot Of Effort To Create...

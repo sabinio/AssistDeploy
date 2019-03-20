@@ -10,6 +10,8 @@ File path of json file.
 File path of ispac file.
 .Parameter localVariables
 Switch to determine whether we need to validate that variables with the name of the variableName exists or not in current session.
+.Parameter variableType
+Existence checks for variables can be either for Powershell variables (e.g. $Foo) or Environment variables (e.g. $Env:Foo).  Deployment tools store values in different ways. This give some control as to where the variables should be checked. 
 .Example
 $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.json" -ispacPath "C:\Users\SQLTraining\Documents\iscPublish.ispac"
 #>
@@ -20,7 +22,10 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
         [Parameter(Position = 1, mandatory = $true)]
         [String] $ispacPath,
         [Parameter(Position = 2, mandatory = $false)]
-        [Switch] $localVariables
+        [Switch] $localVariables,
+        [Parameter(Position = 3, mandatory = $false)]
+        [ValidateSet('Env','PS')]
+        [string] $variableType = 'PS'
     )
     try {
         Write-Verbose "Importing json..." -Verbose
@@ -33,7 +38,7 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
     if (!$localVariables) {
         try {
             Write-Verbose "Testing the PowerShell variables exist to update values in json file... " -Verbose
-            Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested
+            Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested -variableType $variableType
         }
         catch {
             throw $_.Exception
@@ -42,7 +47,7 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
     else{
         try {
             Write-Verbose "Testing the environment variables in json file have a value... " -Verbose
-            Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested -localVariables
+            Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested -localVariables -variableType $variableType
         }
         catch {
             throw $_.Exception

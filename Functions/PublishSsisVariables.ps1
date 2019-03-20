@@ -28,9 +28,12 @@ Optional parameter. We may wish to override the value of what is in the json fil
 .Parameter ssisProjectName
 Optional parameter. We may wish to override the value of what is in the json file.
 .Parameter LocalVariables
-Optional parameter. If used then values stored in json file are used. If not used then PowerShell variables need to exist that have the exact same name as variables in json file.
+Optional parameter. If used then values stored in json file are used. If not used then PowerShell variables need to exist either 
+as full PS variables (e.g. $Foo) or Environment variables (e.g. $Env:Foo) that have the same name as variables in json file.
 .Parameter WhatIf
-Optional parameter. If used then no hcnages are made on server.
+Optional parameter. If used then no changes are made on server.
+.Parameter variableType
+Variables can be either full Powershell variables (e.g. $Foo) or Environment variables (e.g. $Env:Foo).
 .Example
 Publish-SsisVariables -ssisPublishFilePath $thisSsisPublishFilePath -sqlConnection $ssisdb -localVariables
 Non-mandatory params here can be used to overwrite the values stored in the publish json file passed in
@@ -50,7 +53,11 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
         [Parameter(Position = 5, mandatory = $false)]
         [Switch] $localVariables,
         [Parameter(Position = 6, mandatory = $false)]
-        [Switch] $whatIf)
+        [Switch] $whatIf,
+        [Parameter(Position = 7, mandatory = $false)]
+        [ValidateSet('Env','PS')]
+        [string] $variableType = 'PS'
+    )
     $ssisJson = $jsonPsCustomObject
     $ssisProperties = New-IscProperties -jsonObject $ssisJson
     if ($ssisFolderName) {
@@ -66,8 +73,8 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
         $keys = $($ssisJson.ssisEnvironmentVariable)
         foreach ($var in $keys) {
             $varName = $var.VariableName
-            if (Test-Path variable:$varName) {
-                $value = Get-Variable $varName -ValueOnly
+            if (Test-Variable -variableName $varName -variableType $variableType) {
+                $value = Get-VariableByType -variableName $varName -variableType $variableType
                 Write-Verbose ('Setting ssisEnvironmentVariable variable: {0} = {1}' -f $varName, $value) -Verbose
                 $ssisJson.ssisEnvironmentVariable[$keys.IndexOf($var)].value = $value
             }
@@ -76,7 +83,8 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
             }
         }
         if ($missingVariables.Count -gt 0) {
-            throw ('The following ssisEnvironmentVariable variables are not defined in the session (but are defined in the json file): {0}' -f ($missingVariables -join " `n"))
+            throw ('The following ssisEnvironmentVariable variables are not defined in the session as {0} (but are defined in the json file): {1}' -f $variableType,  ($missingVariables -join " `n"))
+
         }
     }
     $sqlDropVars = "
