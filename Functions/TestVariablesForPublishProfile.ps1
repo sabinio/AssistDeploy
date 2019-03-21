@@ -1,7 +1,10 @@
 function Test-VariablesForPublishProfile {
     <#
-    .SYNOPSIS
-    Unimplemented check for variables, as added straight into Publish-SsisVariables. Kept as may be required in the future.
+    .Synopsis
+    Validates variables used in the publish profile
+    .Description
+    Validates variables used in the publish profile.  If -localVariables is false, this function tries to find a variable - either a true powershell variable (e.g. $Foo),
+    or an environment variable (e.g. $Env:Foo) for each property found in $jsonPsCustomObject.ssisEnvironmentVariable.
     #>
     [CmdletBinding()]
     param
@@ -9,7 +12,10 @@ function Test-VariablesForPublishProfile {
         [Parameter(Position = 0, mandatory = $true)]
         [PSCustomObject] $jsonPsCustomObject,
         [Parameter(Position = 0, mandatory = $false)]
-        [Switch] $localVariables
+        [Switch] $localVariables,
+        [Parameter(Position = 2, mandatory = $false)]
+        [ValidateSet('Env','PS')]
+        [string] $variableType = 'PS'
     )
     $missingVariables = @()
     $ssisJson = $jsonPsCustomObject
@@ -17,15 +23,15 @@ function Test-VariablesForPublishProfile {
         $keys = $($ssisJson.ssisEnvironmentVariable)
         foreach ($var in $keys) {
             $varName = $var.VariableName
-            if (Test-Path variable:$varName) {
-                Write-Verbose ('Variable {0} exists in session. ' -f $varName) -Verbose
+            if (Test-Variable -variableName $varName -variableType $variableType) {
+                Write-Verbose ('{0} Variable {1} exists in session. ' -f $variableType, $varName) -Verbose
             }
             else {
                 [string]$missingVariables += $var.VariableName + ' '
             }
         }
         if ($missingVariables.Count -gt 0) {
-            throw ('The following ssisEnvironmentVariable variables are not defined in the session (but are defined in the json file): {0}' -f ($missingVariables -join " `n"))
+            throw ('The following ssisEnvironmentVariable variables are not defined in the session as {0} (but are defined in the json file): {1}' -f $variableType,  ($missingVariables -join " `n"))
         }
     }
     else{
