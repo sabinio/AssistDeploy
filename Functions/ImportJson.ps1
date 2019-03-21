@@ -37,7 +37,7 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
     }
     if (!$localVariables) {
         try {
-            Write-Verbose "Testing the PowerShell variables exist to update values in json file... " -Verbose
+            Write-Verbose ("Testing the {0} PowerShell variables exist to update values in json file... " -f $variableType) -Verbose
             Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested -variableType $variableType
         }
         catch {
