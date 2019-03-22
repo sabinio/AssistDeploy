@@ -39,5 +39,7 @@
 <file src="Functions\UnpublishSsisDeployment.ps1" target="Functions"/>
 <file src="Functions\UnpublishSsisEnvironment.ps1" target="Functions"/>
 <file src="Functions\UnpublishSsisEnvironmentReference.ps1" target="Functions"/>
+<file src="Functions\TestVariable.ps1" target="Functions"/>
+<file src="Functions\GetVariableByType.ps1" target="Functions"/>
 </files>
 </package>
