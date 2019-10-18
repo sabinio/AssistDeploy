@@ -55,7 +55,7 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
         [Parameter(Position = 6, mandatory = $false)]
         [Switch] $whatIf,
         [Parameter(Position = 7, mandatory = $false)]
-        [ValidateSet('Env','PS')]
+        [ValidateSet('Env', 'PS')]
         [string] $variableType = 'PS'
     )
     $ssisJson = $jsonPsCustomObject
@@ -70,7 +70,8 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
         $ssisProperties = Set-IscProperty -iscProperties $ssisProperties -newSsisProjectName $ssisProjectName
     }
     if (!$localVariables) {
-        $keys = $($ssisJson.ssisEnvironmentVariable)
+        $keys = @()
+        $keys += $ssisJson.ssisEnvironmentVariable
         foreach ($var in $keys) {
             $varName = $var.VariableName
             if (Test-Variable -variableName $varName -variableType $variableType) {
@@ -83,7 +84,7 @@ Non-mandatory params here can be used to overwrite the values stored in the publ
             }
         }
         if ($missingVariables.Count -gt 0) {
-            throw ('The following ssisEnvironmentVariable variables are not defined in the session as {0} (but are defined in the json file): {1}' -f $variableType,  ($missingVariables -join " `n"))
+            throw ('The following ssisEnvironmentVariable variables are not defined in the session as {0} (but are defined in the json file): {1}' -f $variableType, ($missingVariables -join " `n"))
 
         }
     }
