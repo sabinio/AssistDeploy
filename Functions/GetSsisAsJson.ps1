@@ -53,32 +53,16 @@ $myJsonObject | Out-File ".\isc_publish_2.json"
     $sqlQueryWhatIsVars = '
     ;
     
-    WITH cte
-    AS (
-        SELECT referenced_variable_name
+	SELECT p.referenced_variable_name
         FROM CATALOG.object_parameters p
-        WHERE project_id = (
-                SELECT project_id
-                FROM CATALOG.projects proj
-                WHERE proj.NAME = @0
-                    AND proj.folder_id = (
-                        SELECT folder.folder_id
-                        FROM CATALOG.folders folder
-                        WHERE folder.NAME = @2
-                            AND folder.folder_id = (
-                                SELECT environment.folder_id
-                                FROM CATALOG.environments environment
-                                WHERE environment.NAME = @1
-                                )
-                        )
-                )
-        )
-    SELECT referenced_variable_name 
-    FROM cte
-    WHERE cte.referenced_variable_name IN (
+	JOIN CATALOG.projects proj on p.project_id = proj.project_id and proj.NAME = @0
+	JOIN CATALOG.folders folder on proj.folder_id = folder.folder_id  AND folder.NAME = @2
+	JOIN CATALOG.environments environment ON environment.folder_id = folder.folder_id and environment.NAME = @1
+	WHERE p.referenced_variable_name IN (
             SELECT NAME
             FROM CATALOG.environment_variables
-            )
+        )
+
     '
     try {
         $sqlCmdWhatIsVars = New-Object System.Data.SqlClient.SqlCommand($sqlQueryWhatIsVars, $sqlConnection)
