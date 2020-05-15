@@ -8,9 +8,9 @@ Add a value to the hash table for use further in the functions
 .Parameter iscProperties
 The hash table that we are adding a property to.
 .Parameter ssisPropertyName
-The name of the property - we may wish to add a new envrionment name to the list of properties we are passing around
-.Parameter ssisProperyValue
-The value ofthe given property ie the name of the new environment name
+The name of the property - we may wish to add a new envrionment name to the list of properties we are passing around.
+.Parameter ssisPropertyValue
+The value of the given property ie the name of the new environment name.
 .Example
 $ssisProperties = Add-IscProperty -iscProperties $ssisProperties -ssisPropertyName "ssisNewEnvironmentName" -ssisPropertyValue $ssisNewEnvironmentName
 .Notes

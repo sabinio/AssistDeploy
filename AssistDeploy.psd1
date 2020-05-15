@@ -13,7 +13,7 @@
     NestedModules = @()
  
     # Version number of this module.
-    ModuleVersion = '1.4.0.1'
+    ModuleVersion = '2.0.0.1'
  
     # ID used to uniquely identify this module
     GUID = '00049e8b-6f5f-41be-8e36-31d500ee53b9'
@@ -62,9 +62,11 @@
  
     # Functions to export from this module
     FunctionsToExport = @(
+         'Add-IscProperty'
         ,'Connect-SsisdbSql'
         ,'Disconnect-SsisdbSql'
-	    ,'Edit-SsisEnvironmentName'
+        ,'Edit-SsisEnvironmentName'
+        ,'Get-VariableByType'
 	    ,'Get-SsisAsJson'
         ,'Get-SsisProjectLsn'
         ,'Import-Json'
@@ -84,6 +86,8 @@
         ,'Test-Json'
         ,'Test-ProjectParamsMatch'
         ,'Test-CurrentPermissions'
+        ,'Test-Variable'
+        ,'Test-VariablesForPublishProfile'
 	    ,'Unpublish-SsisDeployment'
 	    ,'Unpublish-SsisEnvironment'
         ,'Unpublish-SsisEnvironmentReference'
