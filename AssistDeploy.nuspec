@@ -8,37 +8,37 @@
 <licenseUrl>https://raw.githubusercontent.com/sabinio/AssistDeploy/master/LICENSE</licenseUrl>
 </metadata>
 <files>
-<file src="AssistDeploy.psd1"/>
-<file src="AssistDeploy.psm1"/>
+<file src="AssistDeploy\AssistDeploy.psd1"/>
+<file src="AssistDeploy\AssistDeploy.psm1"/>
 <file src="readme.md"/>
 <file src="LICENSE"/>
-<file src="Functions\AddIscProperty.ps1" target="Functions"/>
-<file src="Functions\ConnectSsisdbSql.ps1" target="Functions"/>
-<file src="Functions\DisconnectSsisdbSql.ps1" target="Functions"/>
-<file src="Functions\EditSsisEnvironmentName.ps1" target="Functions"/>
-<file src="Functions\GetSsisAsJson.ps1" target="Functions"/>
-<file src="Functions\GetSsisProjectLsn.ps1" target="Functions"/>
-<file src="Functions\ImportJson.ps1" target="Functions"/>
-<file src="Functions\InvokeValidateSsisProject.ps1" target="Functions"/>
-<file src="Functions\NewIscProperties.ps1" target="Functions"/>
-<file src="Functions\NewSsisVariable.ps1" target="Functions"/>
-<file src="Functions\PublishSsisEnvironment.ps1" target="Functions"/>
-<file src="Functions\PublishSsisEnvironmentReference.ps1" target="Functions"/>
-<file src="Functions\PublishSsisFolder.ps1" target="Functions"/>
-<file src="Functions\PublishSsisIspac.ps1" target="Functions"/>
-<file src="Functions\PublishSsisVariables.ps1" target="Functions"/>
-<file src="Functions\SetEnvironmentVariableProperty.ps1" target="Functions"/>
-<file src="Functions\SetEnvironmentVariableProtection.ps1" target="Functions"/>
-<file src="Functions\SetEnvironmentVariableValue.ps1" target="Functions"/>
-<file src="Functions\SetIscProperty.ps1" target="Functions"/>
-<file src="Functions\SetObjectParameterValue.ps1" target="Functions"/>
-<file src="Functions\TestCurrentPermissions.ps1" target="Functions"/>
-<file src="Functions\TestJson.ps1" target="Functions"/>
-<file src="Functions\TestVariablesForPublishProfile.ps1" target="Functions"/>
-<file src="Functions\UnpublishSsisDeployment.ps1" target="Functions"/>
-<file src="Functions\UnpublishSsisEnvironment.ps1" target="Functions"/>
-<file src="Functions\UnpublishSsisEnvironmentReference.ps1" target="Functions"/>
-<file src="Functions\TestVariable.ps1" target="Functions"/>
-<file src="Functions\GetVariableByType.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\AddIscProperty.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\ConnectSsisdbSql.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\DisconnectSsisdbSql.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\EditSsisEnvironmentName.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\GetSsisAsJson.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\GetSsisProjectLsn.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\ImportJson.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\InvokeValidateSsisProject.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\NewIscProperties.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\NewSsisVariable.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\PublishSsisEnvironment.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\PublishSsisEnvironmentReference.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\PublishSsisFolder.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\PublishSsisIspac.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\PublishSsisVariables.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\SetEnvironmentVariableProperty.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\SetEnvironmentVariableProtection.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\SetEnvironmentVariableValue.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\SetIscProperty.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\SetObjectParameterValue.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\TestCurrentPermissions.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\TestJson.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\TestVariablesForPublishProfile.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\UnpublishSsisDeployment.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\UnpublishSsisEnvironment.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\UnpublishSsisEnvironmentReference.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\TestVariable.ps1" target="Functions"/>
+<file src="AssistDeploy\Functions\GetVariableByType.ps1" target="Functions"/>
 </files>
 </package>
