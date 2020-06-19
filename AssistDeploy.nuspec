@@ -9,7 +9,7 @@
 </metadata>
 <files>
 <file src="AssistDeploy\AssistDeploy.psd1"/>
-<file src="AssistDeploy.psm1"/>
+<file src="AssistDeploy\AssistDeploy.psm1"/>
 <file src="readme.md"/>
 <file src="LICENSE"/>
 <file src="AssistDeploy\Functions\AddIscProperty.ps1" target="Functions"/>
