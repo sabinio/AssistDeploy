@@ -34,7 +34,6 @@
 <file src="Functions\SetObjectParameterValue.ps1" target="Functions"/>
 <file src="Functions\TestCurrentPermissions.ps1" target="Functions"/>
 <file src="Functions\TestJson.ps1" target="Functions"/>
-<file src="Functions\TestProjectParamsMatch.ps1" target="Functions"/>
 <file src="Functions\TestVariablesForPublishProfile.ps1" target="Functions"/>
 <file src="Functions\UnpublishSsisDeployment.ps1" target="Functions"/>
 <file src="Functions\UnpublishSsisEnvironment.ps1" target="Functions"/>
