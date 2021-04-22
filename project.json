@@ -1,0 +1,88 @@
+{
+    "IntegrationServicesCatalog": {
+        "ssisEnvironmentName": "EverestPublic",
+        "ssisProjectName": "WWI_SSIS",
+        "ssisFolderName": "WWI",
+        "ssisEnvironmentDescription": "This is a sql-server-sample project"
+    },
+    "SsisEnvironmentVariable": [
+        {
+            "isSensitive": false,
+            "description": "",
+            "VariableName": "DW_ServerName",
+            "value": ".",
+            "dataType": "String",
+            "parameter": [
+                {
+                    "parameterType": "project",
+                    "parameterName": "WWI_DW_Destination_DB_ServerName"
+                }
+            ]
+        },
+        {
+            "isSensitive": false,
+            "description": "",
+            "VariableName": "DW_UserName",
+            "value": "AssistDeploy",
+            "dataType": "String",
+            "parameter": [
+                {
+                    "parameterType": "project",
+                    "parameterName": "WWI_DW_Destination_DB_UserName"
+                }
+            ]
+        },
+        {
+            "isSensitive": true,
+            "description": "",
+            "VariableName": "DW_Password",
+            "value": "919c36be-3dd9-4fb8-b9dd-a038d45ed63e",
+            "dataType": "String",
+            "parameter": [
+                {
+                    "parameterType": "project",
+                    "parameterName": "WWI_DW_Destination_DB_Password"
+                }
+            ]
+        },
+        {
+            "isSensitive": false,
+            "description": "",
+            "VariableName": "E_Servername",
+            "value": ".",
+            "dataType": "String",
+            "parameter": [
+                {
+                    "parameterType": "project",
+                    "parameterName": "WWI_Source_DB_ServerName"
+                }
+            ]
+        },
+        {
+            "isSensitive": false,
+            "description": "",
+            "VariableName": "E_UserName",
+            "value": "AssistDeploy",
+            "dataType": "String",
+            "parameter": [
+                {
+                    "parameterType": "project",
+                    "parameterName": "WWI_Source_DB_UserName"
+                }
+            ]
+        },
+        {
+            "isSensitive": true,
+            "description": "",
+            "VariableName": "E_Password",
+            "value": "919c36be-3dd9-4fb8-b9dd-a038d45ed63e",
+            "dataType": "String",
+            "parameter": [
+                {
+                    "parameterType": "project",
+                    "parameterName": "WWI_Source_DB_Password"
+                }
+            ]
+        }
+    ]
+}

@@ -19,12 +19,12 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
     (
         [Parameter(Position = 0, mandatory = $true)]
         [String] $jsonPath,
-        [Parameter(Position = 1, mandatory = $true)]
-        [String] $ispacPath,
+        # [Parameter(Position = 1, mandatory = $true)]
+        # [String] $ispacPath,
         [Parameter(Position = 2, mandatory = $false)]
         [Switch] $localVariables,
         [Parameter(Position = 3, mandatory = $false)]
-        [ValidateSet('Env','PS')]
+        [ValidateSet('Env', 'PS')]
         [string] $variableType = 'PS'
     )
     try {
@@ -35,23 +35,23 @@ $ssisJson = Import-Json -jsonPath "C:\Users\SQLTraining\Documents\iscPublish.jso
     catch {
         throw $_.Exception
     }
-    if (!$localVariables) {
-        try {
-            Write-Verbose ("Testing the {0} PowerShell variables exist to update values in json file... " -f $variableType) -Verbose
-            Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested -variableType $variableType
-        }
-        catch {
-            throw $_.Exception
-        }
-    }
-    else{
-        try {
-            Write-Verbose "Testing the environment variables in json file have a value... " -Verbose
-            Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested -localVariables -variableType $variableType
-        }
-        catch {
-            throw $_.Exception
-        }
-    }
+    # if (!$localVariables) {
+    #     try {
+    #         Write-Verbose ("Testing the {0} PowerShell variables exist to update values in json file... " -f $variableType) -Verbose
+    #         Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested -variableType $variableType
+    #     }
+    #     catch {
+    #         throw $_.Exception
+    #     }
+    # }
+    # else{
+    #     try {
+    #         Write-Verbose "Testing the environment variables in json file have a value... " -Verbose
+    #         Test-VariablesForPublishProfile -jsonPsCustomObject $jsonTested -localVariables -variableType $variableType
+    #     }
+    #     catch {
+    #         throw $_.Exception
+    #     }
+    # }
     return $jsonTested
 }
