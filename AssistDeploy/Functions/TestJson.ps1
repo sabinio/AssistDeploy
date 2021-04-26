@@ -38,11 +38,12 @@ $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
     }
     $badType = New-Object -TypeName PSObject
     foreach ($envVar in $jsonToTest.SsisEnvironmentVariable) {
+        [string]$missingSev=$null;
         if (!$envVar.VariableName)
         {$missingSev += "VariableName "}
         if (!$envVar.DataType)
         {$missingSev += "DataType "}
-        if (([String]$isSensitive = $envVar.isSensitive) -eq "" )
+        if ("$($envVar.isSensitive)" -eq "" )
         {$missingSev += "isSensitive "}
         if ($missingSev) {
             $err += ("`n" + 'Values are not specified for the following names in a SsisEnvironmentVariable object in the json file: {0}' -f ($missingSev -join " `n"))
