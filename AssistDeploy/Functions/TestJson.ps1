@@ -43,24 +43,32 @@ $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
         {$missingSev += "VariableName "}
         if (!$envVar.DataType)
         {$missingSev += "DataType "}
-        if ("$($envVar.isSensitive)" -eq "" )
+        if ("$($envVar.isSensitive)" -eq "" )                     
         {$missingSev += "isSensitive "}
         if ($missingSev) {
             $err += ("`n" + 'Values are not specified for the following names in a SsisEnvironmentVariable object in the json file: {0}' -f ($missingSev -join " `n"))
         }
-        if (([string]$varType = $envVar.VariableName.GetType()) -ne "string") {
+        [String]$variableNameType = $envVar.VariableName.GetType()  
+        Write-Verbose "VariableName type: $variableNameType" -Verbose
+        if ($variableNameType -ne "string") {
             $Name = "VariableName {0}" -f $envVar.VariableName
-            $varType += ", should be string."
-            $badType | Add-Member -MemberType NoteProperty -Name $Name -Value $varType
+            $varType = $variableNameType + ", should be string."
+            $badType | Add-Member -MemberType NoteProperty -Name $Name -Value $varType           
         }
-        if (([string]$varType = $envVar.DataType.GetType()) -ne "string") {
+
+        [String]$dataTypeType = $envVar.DataType.GetType()    
+        Write-Verbose "DataType type: $dataTypeType" -Verbose      
+        if ($dataTypeType -ne "string") {
             $Name = "VariableName {0} DataType {1}" -f $envVar.VariableName, $envVar.DataType
-            $varType += ", should be string."
+            $varType = $dataTypeType + ", should be string."
             $badType | Add-Member -MemberType NoteProperty -Name $Name -Value $varType
         } 
-        if (([string]$varType = $envVar.IsSensitive.GetType()) -ne "bool") {
+
+        [string]$isSensitiveType = $envVar.IsSensitive.GetType()
+        Write-Verbose "IsSensitive type: $isSensitiveType" -Verbose 
+        if ($isSensitiveType -ne "bool") {
             $Name = "VariableName {0} IsSensitive {1}" -f $envVar.VariableName, $envVar.IsSensitive
-            $varType += ", should be boolean."
+            $varType = $isSensitiveType + ", should be boolean."
             $badType | Add-Member -MemberType NoteProperty -Name $Name -Value $varType
         } 
         foreach ($param in $envVar.parameter) {
@@ -75,20 +83,28 @@ $ssisJson = Import-Json -path "C:\Users\SQLTraining\Documents\iscPublish.json"
             if ($missingParam) {
                 $err += ("`n" + 'Values are not specified for the following names in a parameter object in the json file: ssisEnvironmentVariable{0}, parameter' -f ($envVar.Variablename, $missingParam -join " `n"))
             }
-            if (([string]$varType = $param.ParameterName.GetType()) -ne "string") {
+
+            [string]$parameterNameType = $param.ParameterName.GetType()
+            Write-Verbose "ParameterName type: $parameterNameType" -Verbose           
+            if ($parameterNameType -ne "string") {
                 $Name = "variable {0} ParameterName {1}" -f $envVar.VariableName, $param.ParameterName
-                $varType += ", should be string."
+                $varType = $parameterNameType + ", should be string."
                 $badType | Add-Member -MemberType NoteProperty -Name $Name-Value $varType
             }
-            if (([string]$varType = $param.parameterType.GetType()) -ne "string") {
+
+            [string]$parameterTypeType = $param.parameterType.GetType()
+            Write-Verbose "ParameterType type: $parameterTypeType" -Verbose 
+            if ($parameterTypeType -ne "string") {
                 $Name = "variable {0}, ParameterName {1} ParameterType {2}" -f $envVar.VariableName, $param.ParameterName, $param.ParameterType
-                $varType += ", should be string."
+                $varType = $parameterTypeType + ", should be string."
                 $badType | Add-Member -MemberType NoteProperty -Name $param.parameterType -Value $varType
             }
             if ($param.parameterType -eq "Package") {
-                if (([string]$varType = $param.ObjectName.GetType()) -ne "string") {
+                [string]$objectNameType = $param.ObjectName.GetType()
+                Write-Verbose "ObjectName type: $objectNameType" -Verbose 
+                if ($objectNameType -ne "string") {
                     $Name = "variable {0}, ParameterName {1} objectName {2}" -f $envVar.VariableName, $param.ParameterName, $param.ParameterType
-                    $varType += ", should be string."
+                    $varType = $objectNameType + ", should be string."
                     $badType | Add-Member -MemberType NoteProperty -Name $param.parameterType -Value $varType
                 }
             }
